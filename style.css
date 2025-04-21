@@ -1,0 +1,380 @@
+/* ==========================================================================
+   1. Variáveis e Reset Básico
+   ========================================================================== */
+:root {
+  --primary: #3498db;
+  --primary-dark: #2980b9;
+  --success: #2ecc71;
+  --danger: #e74c3c;
+  --light: #ecf0f1;
+  --lighter: #f8f9fa;
+  --dark: #2c3e50;
+  --text: #34495e;
+  --white: #ffffff;
+  --border-color: #bdc3c7;
+
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  --font-family: 'Segoe UI', sans-serif;
+  --nav-height: 60px; /* Altura estimada da navegação fixa */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--lighter);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-md);
+  /* Adiciona espaço no final para compensar a navegação fixa */
+  padding-bottom: calc(var(--nav-height) + var(--space-md));
+}
+
+/* ==========================================================================
+   2. Layout Principal (Carrossel)
+   ========================================================================== */
+.carousel-container {
+  width: 100%;
+  max-width: 800px;
+  height: 80vh; /* Altura principal do carrossel */
+  min-height: 500px;
+  overflow: hidden; /* Essencial para o carrossel */
+  position: relative;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  background: var(--white);
+  margin-bottom: var(--space-md);
+}
+
+.carousel-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.5s ease-in-out;
+}
+
+/* ==========================================================================
+   3. Slides
+   ========================================================================== */
+.slide {
+  flex: 0 0 100%; /* Cada slide ocupa 100% da largura */
+  height: 100%; /* Cada slide ocupa 100% da altura */
+  padding: var(--space-lg) var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza horizontalmente por padrão */
+  justify-content: center; /* Centraliza verticalmente por padrão */
+  text-align: center;
+  /* Por padrão, não permite rolagem interna */
+  overflow: hidden;
+}
+
+.slide h1, .slide h2 {
+  color: var(--primary-dark);
+  margin-bottom: var(--space-md);
+}
+.slide h1 { font-size: 1.8rem; }
+.slide h2 { font-size: 1.5rem; }
+
+.slide p {
+  margin-bottom: var(--space-md);
+  max-width: 600px; /* Limita largura do parágrafo */
+}
+
+.slide ul {
+  text-align: left;
+  list-style-position: inside;
+  margin: var(--space-md) 0;
+  padding-left: var(--space-md);
+  max-width: 550px;
+}
+.slide ul li {
+  margin-bottom: var(--space-sm);
+}
+
+/* --- Slide Específico do QUIZ --- */
+#quiz-slide {
+  justify-content: flex-start; /* Alinha conteúdo (título, form) no topo */
+  overflow-y: auto; /* <<< PERMITE ROLAGEM VERTICAL INTERNA */
+  text-align: left;
+  /* Adiciona espaço extra no final DENTRO do slide rolável */
+  padding-bottom: calc(var(--nav-height) + var(--space-lg));
+}
+#quiz-slide h2 {
+  text-align: center; /* Centraliza o título "Questionário" */
+  width: 100%;
+  margin-bottom: var(--space-lg);
+}
+
+/* --- Slide Específico de RESULTADOS --- */
+#result-slide {
+  justify-content: flex-start; /* Alinha conteúdo no topo */
+  overflow-y: auto; /* Permite rolagem se os resultados forem muitos */
+  text-align: left;
+  /* Adiciona espaço extra no final DENTRO do slide rolável */
+  padding-bottom: calc(var(--nav-height) + var(--space-lg));
+}
+#result-slide h2 {
+  text-align: center;
+  width: 100%;
+  margin-bottom: var(--space-lg);
+}
+
+
+/* ==========================================================================
+   4. Estilos do Quiz (Dentro de #quiz-slide)
+   ========================================================================== */
+.quiz-form {
+  width: 100%;
+  max-width: 600px; /* Largura do formulário */
+  margin: 0 auto; /* Centraliza o formulário */
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg); /* Espaço entre as perguntas */
+}
+
+.question {
+  background: var(--lighter);
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--primary);
+}
+
+p.quiz-question { /* Nome da classe adicionado via JS não existe, usar seletor de p */
+  font-weight: 600;
+  margin-bottom: var(--space-md);
+  color: var(--dark);
+  font-size: 1.1rem;
+}
+
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+.quiz-options label {
+  display: flex;
+  align-items: center;
+  padding: var(--space-sm);
+  border-radius: var(--radius-md);
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.quiz-options label:hover {
+  background-color: var(--light);
+}
+
+.quiz-options input[type="radio"] {
+  margin-right: var(--space-md);
+  accent-color: var(--primary); /* Cor do radio selecionado */
+  transform: scale(1.1);
+  flex-shrink: 0;
+}
+
+/* Botão Finalizar Quiz (dentro do form) */
+#quiz-form button { /* Estilo específico para o botão dentro do form */
+  margin-top: var(--space-lg);
+  align-self: center; /* Centraliza o botão */
+}
+
+/* ==========================================================================
+   5. Estilos dos Resultados (Dentro de #result-slide)
+   ========================================================================== */
+.results-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.question-result {
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+  border-radius: var(--radius-md);
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-left-width: 5px; /* Largura da borda de status */
+}
+
+.question-result.correct {
+  border-left-color: var(--success);
+  background-color: #f0fff4; /* Fundo verde bem claro */
+}
+
+.question-result.incorrect {
+  border-left-color: var(--danger);
+  background-color: #fff0f0; /* Fundo vermelho bem claro */
+}
+
+.question-result p {
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+}
+.question-result p:first-of-type { /* Texto da pergunta no resultado */
+  font-weight: 600;
+  color: var(--dark);
+}
+.question-result .correct-answer { /* Texto da resposta correta */
+    font-weight: bold;
+}
+.question-result .result-status { /* Texto "Acertou" / "Errou" */
+  font-weight: bold;
+  margin-top: var(--space-sm);
+  font-size: 1rem;
+}
+.question-result.correct .result-status { color: var(--success); }
+.question-result.incorrect .result-status { color: var(--danger); }
+
+
+.final-score {
+  margin-top: var(--space-xl);
+  padding: var(--space-lg);
+  background: var(--lighter);
+  border-radius: var(--radius-md);
+  text-align: center;
+  border-top: 3px solid var(--primary);
+}
+.final-score h3 {
+  color: var(--dark);
+  margin-bottom: var(--space-md);
+  font-size: 1.2rem;
+}
+
+/* ==========================================================================
+   6. Botões Gerais e Navegação Fixa
+   ========================================================================== */
+/* Estilo base para botões */
+button, .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-lg);
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background-color: var(--primary); /* Cor padrão */
+  color: var(--white); /* Texto padrão */
+  margin: var(--space-sm);
+  text-decoration: none;
+}
+
+button:hover, .btn:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-1px);
+}
+button:active, .btn:active {
+    transform: translateY(0px);
+}
+
+/* Variações (se necessário adicionar classes como .btn-success no HTML/JS) */
+.btn-success { background-color: var(--success); }
+.btn-success:hover { background-color: #27ae60; } /* Darker success */
+
+/* Navegação Fixa */
+.nav-buttons {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: var(--space-md);
+  padding: var(--space-sm) 0;
+  background-color: rgba(255, 255, 255, 0.9); /* Fundo semi-transparente */
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  height: var(--nav-height);
+  align-items: center;
+}
+/* Botões específicos da navegação */
+.nav-buttons button {
+    background-color: var(--dark); /* Cor diferente para navegação */
+}
+.nav-buttons button:hover {
+    background-color: var(--text);
+}
+
+
+/* Ícones (genérico) */
+i.fas {
+  margin-right: var(--space-sm); /* Espaço padrão à direita do ícone */
+}
+button i.fas {
+    line-height: 1; /* Alinha melhor ícones em botões */
+}
+button i.fa-arrow-right { /* Ícone de seta p/ direita */
+    margin-right: 0;
+    margin-left: var(--space-sm);
+}
+
+
+/* ==========================================================================
+   7. Responsividade Básica
+   ========================================================================== */
+@media (max-width: 768px) {
+  body {
+    padding: var(--space-sm);
+    padding-bottom: calc(var(--nav-height) + var(--space-sm));
+  }
+  .carousel-container {
+    height: 85vh; /* Mais altura em telas menores */
+    border-radius: var(--radius-md);
+  }
+  .slide {
+    padding: var(--space-md);
+  }
+  .slide h1 { font-size: 1.5rem; }
+  .slide h2 { font-size: 1.3rem; }
+
+  #quiz-slide, #result-slide {
+      padding-bottom: calc(var(--nav-height) + var(--space-md));
+  }
+
+  .quiz-form, .results-container {
+      max-width: 95%; /* Ocupa mais largura */
+  }
+
+  button, .btn {
+      padding: var(--space-sm) var(--space-md);
+      font-size: 0.9rem;
+  }
+
+  .nav-buttons {
+      padding: var(--space-sm) 0;
+      gap: var(--space-sm);
+  }
+}
+
+@media (max-width: 480px) {
+    .slide h1 { font-size: 1.3rem; }
+    .slide h2 { font-size: 1.1rem; }
+    .slide p { font-size: 0.9rem; }
+    .slide ul li { font-size: 0.9rem; }
+
+    .question { padding: var(--space-sm); }
+    p.quiz-question { font-size: 1rem; }
+    .quiz-options label { padding: var(--space-sm); font-size: 0.9rem; }
+}
