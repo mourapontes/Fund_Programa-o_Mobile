@@ -14,7 +14,7 @@
       <div class="slide active">
         <h1><i class="fas fa-mobile-alt"></i> Fundamentos da Programação Mobile</h1>
         <p>Desenvolvendo experiências móveis modernas e eficientes</p>
-        <button onclick="goToSlide(totalSlides - 3)" class="quiz-start-btn">Iniciar Quiz <i class="fas fa-play"></i></button>
+        <!-- BOTÃO REMOVIDO DAQUI -->
       </div>
 
       <div class="slide"><h2><i class="fas fa-question-circle"></i> O que é Programação Mobile?</h2>
@@ -79,10 +79,13 @@
         </ul>
       </div>
 
-      <div class="slide"><h2><i class="fas fa-flag-checkered"></i> Conclusão</h2>
+      <!-- ÚLTIMO SLIDE DE CONTEÚDO -->
+      <div class="slide">
+        <h2><i class="fas fa-flag-checkered"></i> Conclusão</h2>
         <p>Com técnica e foco na experiência do usuário, você pode criar apps incríveis!</p>
         <button onclick="goToSlide(0)" class="return-btn"><i class="fas fa-home"></i> Voltar ao Início</button>
-        <button onclick="goToSlide(totalSlides - 3)" class="quiz-start-btn">Iniciar Quiz <i class="fas fa-play"></i></button>
+        <!-- BOTÃO MANTIDO AQUI E ONCLICK CORRIGIDO -->
+        <button onclick="startQuiz()" class="quiz-start-btn">Iniciar Quiz <i class="fas fa-play"></i></button>
       </div>
 
       <!-- Questionário -->
@@ -94,8 +97,8 @@
       <!-- Resultado -->
       <div class="slide" id="result-slide">
         <h2><i class="fas fa-chart-bar"></i> Resultado</h2>
-        <p id="quiz-result"></p>
-        <button onclick="goToSlide(0)" class="return-btn"><i class="fas fa-home"></i> Recomeçar</button>
+        <div id="quiz-result"></div> <!-- Div para conter o resultado -->
+        <!-- Botão Recomeçar foi movido para dentro do displayResults no JS -->
       </div>
     </div>
   </div>
