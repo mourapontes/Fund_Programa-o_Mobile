@@ -23,12 +23,20 @@
 
   --font-family: 'Segoe UI', sans-serif;
   --nav-height: 60px; /* Altura estimada da navegação fixa */
+
+  /* Tamanho de fonte base para cálculo de REM. 100% geralmente = 16px */
+  --base-font-size: 100%;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+/* Define o tamanho de fonte raiz para unidades REM */
+html {
+  font-size: var(--base-font-size);
 }
 
 body {
@@ -43,6 +51,9 @@ body {
   padding: var(--space-md);
   /* Adiciona espaço no final para compensar a navegação fixa */
   padding-bottom: calc(var(--nav-height) + var(--space-md));
+  /* Tamanho de fonte padrão para o texto geral no body */
+  font-size: 1rem; /* ~16px se base for 100% */
+  overflow-x: hidden; /* Prevenir rolagem horizontal acidental */
 }
 
 /* ==========================================================================
@@ -68,10 +79,11 @@ body {
 }
 
 /* ==========================================================================
-   3. Slides
+   3. Slides - Fontes Aumentadas
    ========================================================================== */
 .slide {
   flex: 0 0 100%; /* Cada slide ocupa 100% da largura */
+  width: 100%; /* Garante que o flex-basis seja respeitado */
   height: 100%; /* Cada slide ocupa 100% da altura */
   padding: var(--space-lg) var(--space-xl);
   display: flex;
@@ -79,64 +91,57 @@ body {
   align-items: center; /* Centraliza horizontalmente por padrão */
   justify-content: center; /* Centraliza verticalmente por padrão */
   text-align: center;
-  /* Por padrão, não permite rolagem interna */
-  overflow: hidden;
+  overflow: hidden; /* Esconde conteúdo que transborda, exceto onde permitido */
 }
 
 .slide h1, .slide h2 {
   color: var(--primary-dark);
   margin-bottom: var(--space-md);
+  line-height: 1.3;
 }
-.slide h1 { font-size: 1.8rem; }
-.slide h2 { font-size: 1.5rem; }
+
+/* Tamanhos de fonte base (Desktop) */
+.slide h1 { font-size: 2.2rem; } /* Ex: ~35px */
+.slide h2 { font-size: 1.8rem; } /* Ex: ~29px */
 
 .slide p {
   margin-bottom: var(--space-md);
   max-width: 600px; /* Limita largura do parágrafo */
+  font-size: 1.1rem; /* Ex: ~17.6px */
 }
 
 .slide ul {
   text-align: left;
   list-style-position: inside;
   margin: var(--space-md) 0;
-  padding-left: var(--space-md);
+  padding-left: var(--space-md); /* Nao precisa de valor grande aqui */
   max-width: 550px;
+  width: 90%; /* Ocupa largura disponível */
 }
 .slide ul li {
   margin-bottom: var(--space-sm);
+  font-size: 1.05rem; /* Ex: ~16.8px */
 }
 
-/* --- Slide Específico do QUIZ --- */
-#quiz-slide {
-  justify-content: flex-start; /* Alinha conteúdo (título, form) no topo */
-  overflow-y: auto; /* <<< PERMITE ROLAGEM VERTICAL INTERNA */
-  text-align: left;
-  /* Adiciona espaço extra no final DENTRO do slide rolável */
-  padding-bottom: calc(var(--nav-height) + var(--space-lg));
-}
-#quiz-slide h2 {
-  text-align: center; /* Centraliza o título "Questionário" */
-  width: 100%;
-  margin-bottom: var(--space-lg);
-}
-
-/* --- Slide Específico de RESULTADOS --- */
+/* Slides específicos com rolagem */
+#quiz-slide,
 #result-slide {
   justify-content: flex-start; /* Alinha conteúdo no topo */
-  overflow-y: auto; /* Permite rolagem se os resultados forem muitos */
+  overflow-y: auto; /* Permite rolagem vertical */
   text-align: left;
-  /* Adiciona espaço extra no final DENTRO do slide rolável */
-  padding-bottom: calc(var(--nav-height) + var(--space-lg));
+  padding-bottom: calc(var(--nav-height) + var(--space-lg)); /* Espaço extra no final */
 }
+#quiz-slide h2,
 #result-slide h2 {
-  text-align: center;
+  text-align: center; /* Centraliza o título */
   width: 100%;
   margin-bottom: var(--space-lg);
+  /* Herda font-size de .slide h2 */
 }
 
 
 /* ==========================================================================
-   4. Estilos do Quiz (Dentro de #quiz-slide)
+   4. Estilos do Quiz (Dentro de #quiz-slide) - Fontes Aumentadas
    ========================================================================== */
 .quiz-form {
   width: 100%;
@@ -154,11 +159,13 @@ body {
   border-left: 4px solid var(--primary);
 }
 
-p.quiz-question { /* Nome da classe adicionado via JS não existe, usar seletor de p */
+/* Texto da pergunta (Seleciona o <p> que contém o texto da questão) */
+.question p:first-of-type { /* Geralmente o JS cria um <p> para o texto da pergunta */
   font-weight: 600;
   margin-bottom: var(--space-md);
   color: var(--dark);
-  font-size: 1.1rem;
+  font-size: 1.2rem; /* Ex: ~19px */
+  line-height: 1.4;
 }
 
 .quiz-options {
@@ -168,15 +175,17 @@ p.quiz-question { /* Nome da classe adicionado via JS não existe, usar seletor 
   margin-top: var(--space-md);
 }
 
+/* Texto das opções */
 .quiz-options label {
   display: flex;
   align-items: center;
-  padding: var(--space-sm);
+  padding: var(--space-sm) var(--space-md); /* Padding interno */
   border-radius: var(--radius-md);
   background: var(--white);
   border: 1px solid var(--border-color);
   cursor: pointer;
   transition: background-color 0.2s ease;
+  font-size: 1rem; /* Ex: ~16px */
 }
 
 .quiz-options label:hover {
@@ -184,30 +193,36 @@ p.quiz-question { /* Nome da classe adicionado via JS não existe, usar seletor 
 }
 
 .quiz-options input[type="radio"] {
-  margin-right: var(--space-md);
+  margin-right: var(--space-md); /* Espaço entre radio e texto */
   accent-color: var(--primary); /* Cor do radio selecionado */
-  transform: scale(1.1);
-  flex-shrink: 0;
+  transform: scale(1.2); /* Deixa o radio um pouco maior */
+  flex-shrink: 0; /* Impede que encolha */
 }
 
 /* Botão Finalizar Quiz (dentro do form) */
-#quiz-form button { /* Estilo específico para o botão dentro do form */
+#quiz-form button[type="submit"] { /* Mais específico */
   margin-top: var(--space-lg);
   align-self: center; /* Centraliza o botão */
+  /* Herda estilo de botão geral */
 }
 
 /* ==========================================================================
-   5. Estilos dos Resultados (Dentro de #result-slide)
+   5. Estilos dos Resultados (Dentro de #result-slide) - Fontes Aumentadas
    ========================================================================== */
-.results-container {
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
+#quiz-result { /* Aplica ao container dos resultados gerado pelo JS */
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto var(--space-lg) auto; /* Centraliza e adiciona margem inferior */
+}
+
+.results-container { /* Se você tiver essa classe envolvendo os resultados no JS */
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
 }
 
 .question-result {
   padding: var(--space-md);
-  margin-bottom: var(--space-md);
   border-radius: var(--radius-md);
   background: var(--white);
   border: 1px solid var(--border-color);
@@ -225,12 +240,14 @@ p.quiz-question { /* Nome da classe adicionado via JS não existe, usar seletor 
 }
 
 .question-result p {
-  margin: 0.3rem 0;
-  font-size: 0.95rem;
+  margin: 0.4rem 0;
+  font-size: 1.05rem; /* Ex: ~16.8px */
+  line-height: 1.5;
 }
 .question-result p:first-of-type { /* Texto da pergunta no resultado */
   font-weight: 600;
   color: var(--dark);
+  font-size: 1.1rem; /* Ex: ~17.6px */
 }
 .question-result .correct-answer { /* Texto da resposta correta */
     font-weight: bold;
@@ -238,7 +255,7 @@ p.quiz-question { /* Nome da classe adicionado via JS não existe, usar seletor 
 .question-result .result-status { /* Texto "Acertou" / "Errou" */
   font-weight: bold;
   margin-top: var(--space-sm);
-  font-size: 1rem;
+  font-size: 1.1rem; /* Ex: ~17.6px */
 }
 .question-result.correct .result-status { color: var(--success); }
 .question-result.incorrect .result-status { color: var(--danger); }
@@ -251,23 +268,32 @@ p.quiz-question { /* Nome da classe adicionado via JS não existe, usar seletor 
   border-radius: var(--radius-md);
   text-align: center;
   border-top: 3px solid var(--primary);
+  width: 100%; /* Garante que ocupe a largura no slide */
+  max-width: 600px; /* Mantém consistência */
+  margin-left: auto; /* Centraliza se #result-slide for mais largo */
+  margin-right: auto;
 }
 .final-score h3 {
   color: var(--dark);
   margin-bottom: var(--space-md);
-  font-size: 1.2rem;
+  font-size: 1.4rem; /* Ex: ~22.4px */
+  line-height: 1.4;
+}
+/* Estilo para botão de recomeçar (se gerado via JS dentro de final-score) */
+.final-score button {
+    margin-top: var(--space-md);
 }
 
+
 /* ==========================================================================
-   6. Botões Gerais e Navegação Fixa
+   6. Botões Gerais e Navegação Fixa - Fontes Aumentadas
    ========================================================================== */
-/* Estilo base para botões */
 button, .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-sm) var(--space-lg);
-  font-size: 0.95rem;
+  padding: var(--space-md) var(--space-lg); /* Mais espaço interno */
+  font-size: 1rem; /* Ex: 16px */
   font-weight: 600;
   border: none;
   border-radius: var(--radius-md);
@@ -277,8 +303,10 @@ button, .btn {
   letter-spacing: 0.5px;
   background-color: var(--primary); /* Cor padrão */
   color: var(--white); /* Texto padrão */
-  margin: var(--space-sm);
-  text-decoration: none;
+  margin: var(--space-sm); /* Espaçamento externo */
+  text-decoration: none; /* Para links estilizados como botões */
+  min-height: 44px; /* Boa prática para toque (WCAG) */
+  line-height: 1; /* Alinha texto e ícone verticalmente */
 }
 
 button:hover, .btn:hover {
@@ -289,9 +317,12 @@ button:active, .btn:active {
     transform: translateY(0px);
 }
 
-/* Variações (se necessário adicionar classes como .btn-success no HTML/JS) */
-.btn-success { background-color: var(--success); }
-.btn-success:hover { background-color: #27ae60; } /* Darker success */
+/* Botão Iniciar Quiz e Voltar Início nos slides */
+.quiz-start-btn, .return-btn {
+    /* Herdam o estilo base de 'button' */
+    /* Pode adicionar estilos específicos se necessário */
+}
+
 
 /* Navegação Fixa */
 .nav-buttons {
@@ -303,7 +334,7 @@ button:active, .btn:active {
   justify-content: center;
   gap: var(--space-md);
   padding: var(--space-sm) 0;
-  background-color: rgba(255, 255, 255, 0.9); /* Fundo semi-transparente */
+  background-color: rgba(255, 255, 255, 0.95); /* Fundo levemente opaco */
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
   z-index: 10;
   height: var(--nav-height);
@@ -312,18 +343,27 @@ button:active, .btn:active {
 /* Botões específicos da navegação */
 .nav-buttons button {
     background-color: var(--dark); /* Cor diferente para navegação */
+    /* Herdam tamanho de fonte e padding de 'button' */
 }
 .nav-buttons button:hover {
     background-color: var(--text);
 }
+/* Estilo para botões desabilitados na navegação */
+.nav-buttons button:disabled {
+    background-color: #95a5a6; /* Cinza */
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none; /* Remove efeito hover/active */
+}
 
 
-/* Ícones (genérico) */
+/* Ícones */
 i.fas {
   margin-right: var(--space-sm); /* Espaço padrão à direita do ícone */
+  /* O tamanho do ícone geralmente se adapta à font-size do elemento pai (botão) */
 }
 button i.fas {
-    line-height: 1; /* Alinha melhor ícones em botões */
+    line-height: 1; /* Garante alinhamento */
 }
 button i.fa-arrow-right { /* Ícone de seta p/ direita */
     margin-right: 0;
@@ -332,49 +372,89 @@ button i.fa-arrow-right { /* Ícone de seta p/ direita */
 
 
 /* ==========================================================================
-   7. Responsividade Básica
+   7. Responsividade - Ajustes de Fontes para Mobile
    ========================================================================== */
+
+/* --- Telas Médias (Tablets, etc.) --- */
 @media (max-width: 768px) {
+  /* Pode ajustar a base se quiser diminuir tudo proporcionalmente */
+  /* html { font-size: 95%; } */
+
   body {
-    padding: var(--space-sm);
-    padding-bottom: calc(var(--nav-height) + var(--space-sm));
+    font-size: 0.95rem; /* Reduz texto geral */
   }
   .carousel-container {
-    height: 85vh; /* Mais altura em telas menores */
-    border-radius: var(--radius-md);
+    height: 85vh; /* Mais altura */
   }
   .slide {
-    padding: var(--space-md);
+    padding: var(--space-md); /* Menos padding lateral */
   }
-  .slide h1 { font-size: 1.5rem; }
-  .slide h2 { font-size: 1.3rem; }
+  /* Ajustando títulos para tablet */
+  .slide h1 { font-size: 1.9rem; }
+  .slide h2 { font-size: 1.6rem; }
+  .slide p { font-size: 1rem; }
+  .slide ul li { font-size: 1rem; }
 
-  #quiz-slide, #result-slide {
-      padding-bottom: calc(var(--nav-height) + var(--space-md));
+  .quiz-form, #quiz-result, .final-score {
+      max-width: 95%; /* Ocupa mais largura da tela */
   }
 
-  .quiz-form, .results-container {
-      max-width: 95%; /* Ocupa mais largura */
-  }
+  /* Ajustando fontes do quiz/resultado para tablet */
+  .question p:first-of-type { font-size: 1.1rem; }
+  .quiz-options label { font-size: 0.95rem; }
+  .question-result p { font-size: 1rem; }
+  .question-result p:first-of-type { font-size: 1.05rem; }
+  .question-result .result-status { font-size: 1.05rem; }
+  .final-score h3 { font-size: 1.3rem; }
 
+  /* Ajustando botões para tablet */
   button, .btn {
       padding: var(--space-sm) var(--space-md);
       font-size: 0.9rem;
+      min-height: 42px; /* Mantém bom toque */
   }
 
   .nav-buttons {
-      padding: var(--space-sm) 0;
-      gap: var(--space-sm);
+      gap: var(--space-sm); /* Menos espaço entre botões */
   }
 }
 
+/* --- Telas Pequenas (Smartphones) --- */
 @media (max-width: 480px) {
-    .slide h1 { font-size: 1.3rem; }
-    .slide h2 { font-size: 1.1rem; }
-    .slide p { font-size: 0.9rem; }
-    .slide ul li { font-size: 0.9rem; }
+  /* Pode ajustar a base se quiser diminuir tudo proporcionalmente */
+  /* html { font-size: 90%; } */
 
-    .question { padding: var(--space-sm); }
-    p.quiz-question { font-size: 1rem; }
-    .quiz-options label { padding: var(--space-sm); font-size: 0.9rem; }
+  body {
+    font-size: 0.9rem; /* Reduz mais um pouco */
+    padding: var(--space-sm) * 0.5; /* Ainda menos padding no body */
+    padding-bottom: calc(var(--nav-height) + var(--space-sm)); /* Mantem espaço da nav */
+  }
+  .slide {
+    padding: var(--space-sm); /* Menos padding nos slides */
+  }
+  /* Ajustando títulos para smartphones */
+  .slide h1 { font-size: 1.6rem; }
+  .slide h2 { font-size: 1.4rem; }
+  .slide p { font-size: 0.95rem; }
+  .slide ul li { font-size: 0.95rem; }
+
+  /* Ajustando fontes do quiz/resultado para smartphone */
+  .question p:first-of-type { font-size: 1rem; }
+  .quiz-options label { font-size: 0.9rem; padding: calc(var(--space-sm) * 0.8); } /* Menos padding na label */
+  .quiz-options input[type="radio"] { transform: scale(1.1); margin-right: var(--space-sm);} /* Radio menor */
+  .question-result p { font-size: 0.9rem; }
+  .question-result p:first-of-type { font-size: 0.95rem; }
+  .question-result .result-status { font-size: 0.95rem; }
+  .final-score h3 { font-size: 1.1rem; } /* Mensagem final menor */
+
+  /* Ajustando botões para smartphone */
+  button, .btn {
+      font-size: 0.85rem;
+      padding: var(--space-sm) var(--space-sm);
+      min-height: 38px;
+  }
+
+  .nav-buttons {
+      height: calc(var(--nav-height) * 0.9); /* Barra de nav pode ser um pouco menor */
+  }
 }
