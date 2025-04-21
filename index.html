@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fundamentos da Programação Mobile</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="carousel-container">
+    <div class="carousel-track" id="track">
+      <!-- Slides principais -->
+      <div class="slide active">
+        <h1><i class="fas fa-mobile-alt"></i> Fundamentos da Programação Mobile</h1>
+        <p>Desenvolvendo experiências móveis modernas e eficientes</p>
+        <button onclick="goToSlide(totalSlides - 3)" class="quiz-start-btn">Iniciar Quiz <i class="fas fa-play"></i></button>
+      </div>
+
+      <div class="slide"><h2><i class="fas fa-question-circle"></i> O que é Programação Mobile?</h2>
+        <ul>
+          <li>Apps para smartphones e tablets</li>
+          <li>Interface, lógica, hardware</li>
+          <li>Tipos: Nativo, Híbrido e Cross-Platform</li>
+        </ul>
+      </div>
+
+      <div class="slide"><h2><i class="fas fa-cogs"></i> Plataformas e Ecossistemas</h2>
+        <ul>
+          <li><strong>Android</strong>: Java, Kotlin, Android Studio</li>
+          <li><strong>iOS</strong>: Swift, Objective-C, Xcode</li>
+          <li><strong>Cross-Platform</strong>: Flutter, React Native</li>
+        </ul>
+      </div>
+
+      <div class="slide"><h2><i class="fas fa-code"></i> Linguagens de Programação</h2>
+        <ul>
+          <li>Java & Kotlin – Android</li>
+          <li>Swift – iOS</li>
+          <li>Dart – Flutter</li>
+          <li>JavaScript/TypeScript – React Native</li>
+        </ul>
+      </div>
+
+      <div class="slide"><h2><i class="fas fa-layer-group"></i> Arquitetura de um App Mobile</h2>
+        <ul>
+          <li>UI, lógica, API, banco local, recursos do dispositivo</li>
+        </ul>
+      </div>
+
+      <div class="slide"><h2><i class="fas fa-sync-alt"></i> Ciclo de Vida de um App</h2>
+        <ul>
+          <li>onCreate(), onStart(), onResume()</li>
+          <li>onPause(), onStop(), onDestroy()</li>
+          <li>Gerenciamento de estados</li>
+        </ul>
+      </div>
+
+      <div class="slide"><h2><i class="fas fa-tools"></i> Ferramentas Essenciais</h2>
+        <ul>
+          <li>Android Studio, Xcode, VS Code</li>
+          <li>Emuladores, simuladores</li>
+          <li>Firebase, Postman, Git, Figma</li>
+        </ul>
+      </div>
+
+      <div class="slide"><h2><i class="fas fa-thumbs-up"></i> Boas Práticas</h2>
+        <ul>
+          <li>Interface limpa, código modular</li>
+          <li>Arquiteturas: MVC, MVVM</li>
+          <li>Testes, performance</li>
+        </ul>
+      </div>
+
+      <div class="slide"><h2><i class="fas fa-bolt"></i> Tendências e Futuro</h2>
+        <ul>
+          <li>IA, IoT, 5G, PWAs</li>
+          <li>Flutter e React Native em alta</li>
+        </ul>
+      </div>
+
+      <div class="slide"><h2><i class="fas fa-flag-checkered"></i> Conclusão</h2>
+        <p>Com técnica e foco na experiência do usuário, você pode criar apps incríveis!</p>
+        <button onclick="goToSlide(0)" class="return-btn"><i class="fas fa-home"></i> Voltar ao Início</button>
+        <button onclick="goToSlide(totalSlides - 3)" class="quiz-start-btn">Iniciar Quiz <i class="fas fa-play"></i></button>
+      </div>
+
+      <!-- Questionário -->
+      <div class="slide" id="quiz-slide">
+        <h2><i class="fas fa-question"></i> Questionário</h2>
+        <form id="quiz-form" class="quiz-form"></form>
+      </div>
+
+      <!-- Resultado -->
+      <div class="slide" id="result-slide">
+        <h2><i class="fas fa-chart-bar"></i> Resultado</h2>
+        <p id="quiz-result"></p>
+        <button onclick="goToSlide(0)" class="return-btn"><i class="fas fa-home"></i> Recomeçar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navegação -->
+  <div class="nav-buttons">
+    <button onclick="navigate(-1)"><i class="fas fa-arrow-left"></i> Anterior</button>
+    <button onclick="navigate(1)">Próximo <i class="fas fa-arrow-right"></i></button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
